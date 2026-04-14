@@ -34,7 +34,7 @@ export class PackedMipMapGenerator {
     const shader = clone(MipGenerationShader);
     shader.fragmentShader = shader.fragmentShader!.replace(
       /<mipmap_logic>/g,
-      mipmapLogic
+      mipmapLogic,
     );
 
     // Save the mip materials such that mip 0 indicates whether or not X is power
@@ -71,7 +71,7 @@ export class PackedMipMapGenerator {
     texture: Texture,
     target: WebGLRenderTarget,
     renderer: WebGLRenderer,
-    forcePowerOfTwo = false
+    forcePowerOfTwo = false,
   ) {
     // @ts-ignore
     if (texture.isWebGLRenderTarget) {
@@ -92,12 +92,13 @@ export class PackedMipMapGenerator {
     // TODO: add option for ceil power of two and option to not power of two at all? This
     // causes the mip texels to not align, though...
     let width, height;
+    const img = texture.image as HTMLImageElement;
     if (forcePowerOfTwo) {
-      width = MathUtils.floorPowerOfTwo(texture.image.width);
-      height = MathUtils.floorPowerOfTwo(texture.image.height);
+      width = MathUtils.floorPowerOfTwo(img.width);
+      height = MathUtils.floorPowerOfTwo(img.height);
     } else {
-      width = Math.floor(texture.image.width);
-      height = Math.floor(texture.image.height);
+      width = Math.floor(img.width);
+      height = Math.floor(img.height);
     }
 
     const targetWidth = Math.floor(width * 1.5);
@@ -111,7 +112,9 @@ export class PackedMipMapGenerator {
       swapTarget.copy(target);
 
       // mrdoob/three.js issue #20328
-      swapTarget.texture.image = { ...swapTarget.texture.image };
+      swapTarget.texture.image = {
+        ...(swapTarget.texture.image as HTMLImageElement),
+      };
     } else {
       swapTarget.setSize(targetWidth, targetHeight);
     }
@@ -130,7 +133,7 @@ export class PackedMipMapGenerator {
       0,
       0,
       targetWidth,
-      targetHeight
+      targetHeight,
     );
 
     renderer.setRenderTarget(target);
@@ -175,7 +178,7 @@ export class PackedMipMapGenerator {
         -width,
         -yOffset,
         targetWidth,
-        targetHeight
+        targetHeight,
       );
       mipQuad.render(renderer);
 

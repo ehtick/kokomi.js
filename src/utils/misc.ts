@@ -6,12 +6,7 @@ import { makeBuffer } from "./gl";
 
 // 开启sRGB颜色空间
 const enableSRGBColorSpace = (renderer: THREE.WebGLRenderer) => {
-  if (renderer.outputColorSpace) {
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-  } else {
-    // @ts-ignore
-    renderer.outputEncoding = THREE.sRGBEncoding;
-  }
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 };
 
 // 优化模型渲染
@@ -48,7 +43,7 @@ const enableShadow = (renderer: THREE.WebGLRenderer) => {
 // 从hdr贴图中提取envmap
 const getEnvmapFromHDRTexture = (
   renderer: THREE.WebGLRenderer,
-  texture: THREE.Texture
+  texture: THREE.Texture,
 ) => {
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
   pmremGenerator.compileEquirectangularShader();
@@ -60,7 +55,7 @@ const getEnvmapFromHDRTexture = (
 // 从场景中提取envmap
 const getEnvmapFromScene = (
   renderer: THREE.WebGLRenderer,
-  scene: THREE.Scene
+  scene: THREE.Scene,
 ) => {
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
   pmremGenerator.compileCubemapShader();
@@ -84,7 +79,7 @@ const getBaryCoord = (bufferGeometry: THREE.BufferGeometry) => {
 // 从mesh上取样微粒位置信息
 const sampleParticlesPositionFromMesh = (
   geometry: THREE.BufferGeometry,
-  count = 10000
+  count = 10000,
 ) => {
   const material = new THREE.MeshBasicMaterial();
   const mesh = new THREE.Mesh(geometry, material);
@@ -134,7 +129,7 @@ const getViewport = (camera: THREE.Camera) => {
 const getPositionCentroids = (
   geometry: THREE.BufferGeometry,
   attrName = "position",
-  centroidName = "aCenter"
+  centroidName = "aCenter",
 ) => {
   const position = geometry.attributes[attrName];
   const posCount = position.count;
@@ -169,7 +164,7 @@ const getPositionCentroids = (
 
   geometry.setAttribute(
     centroidName,
-    new THREE.BufferAttribute(centroidBuffer, 3)
+    new THREE.BufferAttribute(centroidBuffer, 3),
   );
 
   return centroidBuffer;
@@ -182,7 +177,7 @@ export interface CreatePolygonShapeConfig {
 // 创建多边形形状
 const createPolygonShape = (
   points: THREE.Vector2[],
-  config: Partial<CreatePolygonShapeConfig> = {}
+  config: Partial<CreatePolygonShapeConfig> = {},
 ) => {
   const shape = new THREE.Shape();
 
@@ -206,7 +201,7 @@ const createPolygonShape = (
 const calcPerspectiveScreenSize = (
   targetZ = 0,
   camera: THREE.PerspectiveCamera,
-  aspect: number
+  aspect: number,
 ) => {
   let screenWidth = 1;
   let screenHeight = 1;
@@ -254,28 +249,28 @@ const getBound = (object: THREE.Object3D, precise = true) => {
 const getBoundsVertices = (bounds: THREE.Box3) => {
   let boundsVertices = [];
   boundsVertices.push(
-    new THREE.Vector3(bounds.min.x, bounds.min.y, bounds.min.z)
+    new THREE.Vector3(bounds.min.x, bounds.min.y, bounds.min.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.min.x, bounds.min.y, bounds.max.z)
+    new THREE.Vector3(bounds.min.x, bounds.min.y, bounds.max.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.min.x, bounds.max.y, bounds.min.z)
+    new THREE.Vector3(bounds.min.x, bounds.max.y, bounds.min.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.min.x, bounds.max.y, bounds.max.z)
+    new THREE.Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.max.x, bounds.min.y, bounds.min.z)
+    new THREE.Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.max.x, bounds.min.y, bounds.max.z)
+    new THREE.Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.max.x, bounds.max.y, bounds.min.z)
+    new THREE.Vector3(bounds.max.x, bounds.max.y, bounds.min.z),
   );
   boundsVertices.push(
-    new THREE.Vector3(bounds.max.x, bounds.max.y, bounds.max.z)
+    new THREE.Vector3(bounds.max.x, bounds.max.y, bounds.max.z),
   );
   return boundsVertices;
 };
@@ -300,7 +295,7 @@ const fixShapeGeometryUV = (mesh: THREE.Mesh) => {
     attUv.setXY(
       i,
       (vec3.x - box.min.x) / size.x,
-      (vec3.y - box.min.y) / size.y
+      (vec3.y - box.min.y) / size.y,
     );
   }
 };
@@ -312,7 +307,7 @@ const saveString = (text: string, filename: string) => {
 const saveArrayBuffer = (buffer: ArrayBuffer, filename: string) => {
   downloadBlob(
     new Blob([buffer], { type: "application/octet-stream" }),
-    filename
+    filename,
   );
 };
 
@@ -325,7 +320,7 @@ const exportGLTF = (
     onlyVisible = true,
     binary = false,
     maxTextureSize = 4096,
-  } = {}
+  } = {},
 ) => {
   const gltfExporter = new GLTFExporter();
 
@@ -348,7 +343,7 @@ const exportGLTF = (
       onlyVisible,
       binary,
       maxTextureSize,
-    }
+    },
   );
 };
 

@@ -1,22 +1,29 @@
 {
   "name": "kokomi.js",
-  "version": "1.10.3",
+  "version": "1.11.0",
   "description": "A three.js helper library.",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "scripts": {
-    "build": "rimraf dist && tsc && rimraf build && rollup -c",
-    "updateIndex": "node examples/getFilesData.mjs",
-    "doc": "rimraf docs && typedoc src/index.ts",
-    "all": "node examples/getFilesData.mjs && rimraf dist && tsc && rimraf build && rollup -c && rimraf docs && typedoc src/index.ts"
-  },
   "author": "alphardex",
   "license": "MIT",
+  "main": "./build/index.esm.js",
+  "types": "./build/types/index.d.ts",
+  "module": "./build/index.esm.js",
+  "files": [
+    "build",
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist build",
+    "build:types": "tsc -p tsconfig.json",
+    "build:js": "rollup -c",
+    "build": "npm run clean && npm run build:types && npm run build:js",
+    "doc": "rimraf docs && typedoc src/index.ts",
+    "all": "npm run build && npm run doc"
+  },
   "dependencies": {
     "blueimp-md5": "^2.19.0",
-    "camera-controls": "^2.8.5",
+    "camera-controls": "^3.1.2",
     "cannon-es": "^0.20.0",
-    "gsap": "^3.12.5",
+    "gsap": "^3.15.0",
     "imagesloaded": "^5.0.0",
     "maku.js": "^1.0.8",
     "marcher.js": "^1.4.3",
@@ -25,26 +32,26 @@
     "simplex-noise": "^4.0.3",
     "stats.js": "^0.17.0",
     "three-custom-shader-material": "^5.4.0",
-    "three-stdlib": "^2.32.2",
+    "three-stdlib": "^2.36.1",
     "three.interactive": "^1.8.0",
-    "troika-three-text": "^0.49.1"
+    "troika-three-text": "^0.52.4"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^26.0.1",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/blueimp-md5": "^2.18.2",
-    "@types/imagesloaded": "^4.1.6",
-    "@types/stats.js": "^0.17.3",
-    "@types/three": "^0.167.1",
-    "rimraf": "^6.0.1",
-    "rollup": "^4.20.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "tslib": "^2.6.3",
-    "typedoc": "^0.26.5",
-    "typescript": "^5.5.4"
+    "@types/imagesloaded": "^4.1.7",
+    "@types/stats.js": "^0.17.4",
+    "@types/three": "^0.183.1",
+    "rimraf": "^6.1.3",
+    "rollup": "^4.60.1",
+    "tslib": "^2.8.1",
+    "typedoc": "^0.28.19",
+    "typescript": "^6.0.2"
   },
   "peerDependencies": {
-    "three": ">=0.137"
+    "three": ">=0.160"
   }
 }

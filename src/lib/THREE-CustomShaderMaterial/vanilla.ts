@@ -32,7 +32,7 @@ const isExactMatch = (str: string, match: string) => {
 };
 
 function isConstructor(
-  f: CSMBaseMaterial
+  f: CSMBaseMaterial,
 ): f is new (opts: { [key: string]: any }) => Material {
   try {
     // @ts-ignore
@@ -78,7 +78,7 @@ class CustomShaderMaterial extends Material {
 
     if (base.type === "RawShaderMaterial") {
       throw new Error(
-        "CustomShaderMaterial does not support RawShaderMaterial"
+        "CustomShaderMaterial does not support RawShaderMaterial",
       );
     }
 
@@ -115,9 +115,10 @@ class CustomShaderMaterial extends Material {
       (prev, { value }) => {
         return prev + JSON.stringify(value);
       },
-      ""
+      "",
     );
 
+    // @ts-ignore
     this.uuid =
       opts?.cacheKey?.() ||
       hash([
@@ -170,7 +171,7 @@ class CustomShaderMaterial extends Material {
       if (parsedFragmentShader) {
         const patchedFragmentShader = this.patchShader(
           parsedFragmentShader,
-          shader.fragmentShader
+          shader.fragmentShader,
         );
         shader.fragmentShader =
           this.getMaterialDefine() + patchedFragmentShader;
@@ -178,7 +179,7 @@ class CustomShaderMaterial extends Material {
       if (parsedVertexShader) {
         const patchedVertexShader = this.patchShader(
           parsedVertexShader,
-          shader.vertexShader
+          shader.vertexShader,
         );
 
         shader.vertexShader = "#define IS_VERTEX;\n" + patchedVertexShader;
@@ -228,7 +229,7 @@ class CustomShaderMaterial extends Material {
           void main() {
             ${defaultDefinitions}
             ${customShader.main}
-          `
+          `,
     );
 
     patchedShader = customShader.defines + patchedShader;
@@ -249,7 +250,7 @@ class CustomShaderMaterial extends Material {
       })
       .indexOf("main");
     const variables = stringify(
-      tokens.slice(0, mainIndex >= 0 ? funcs[mainIndex].outer[0] : undefined)
+      tokens.slice(0, mainIndex >= 0 ? funcs[mainIndex].outer[0] : undefined),
     );
     const mainBody =
       mainIndex >= 0

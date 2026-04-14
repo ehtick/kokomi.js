@@ -34,7 +34,7 @@ class Reflector extends Mesh {
   dispose: () => void;
   constructor(
     geometry: BufferGeometry,
-    options: Partial<ReflectorConfig> = {}
+    options: Partial<ReflectorConfig> = {},
   ) {
     super(geometry);
 
@@ -152,7 +152,7 @@ class Reflector extends Mesh {
         0.0,
         0.0,
         0.0,
-        1.0
+        1.0,
       );
       textureMatrix.multiply(virtualCamera.projectionMatrix);
       textureMatrix.multiply(virtualCamera.matrixWorldInverse);
@@ -162,7 +162,7 @@ class Reflector extends Mesh {
       // Paper explaining this technique: http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
       reflectorPlane.setFromNormalAndCoplanarPoint(
         normal,
-        reflectorWorldPosition
+        reflectorWorldPosition,
       );
       reflectorPlane.applyMatrix4(virtualCamera.matrixWorldInverse);
 
@@ -170,7 +170,7 @@ class Reflector extends Mesh {
         reflectorPlane.normal.x,
         reflectorPlane.normal.y,
         reflectorPlane.normal.z,
-        reflectorPlane.constant
+        reflectorPlane.constant,
       );
 
       const projectionMatrix = virtualCamera.projectionMatrix;
@@ -209,11 +209,7 @@ class Reflector extends Mesh {
       const currentOutputEncoding = renderer.outputEncoding;
       const currentToneMapping = renderer.toneMapping;
 
-      let isSRGB = false;
-      if ("outputColorSpace" in renderer)
-        isSRGB = renderer.outputColorSpace === "srgb";
-      // @ts-ignore
-      else isSRGB = renderer.outputEncoding === 3001; // sRGBEncoding
+      let isSRGB = renderer.outputColorSpace === "srgb";
 
       renderer.xr.enabled = false; // Avoid camera modification
       renderer.shadowMap.autoUpdate = false; // Avoid re-computing shadows

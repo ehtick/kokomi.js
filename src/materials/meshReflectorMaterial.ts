@@ -31,7 +31,7 @@ class MeshReflectorMaterial extends Component {
   constructor(
     base: Base,
     parent: THREE.Mesh,
-    config: Partial<MeshReflectorMaterialConfig> = {}
+    config: Partial<MeshReflectorMaterialConfig> = {},
   ) {
     super(base);
 
@@ -133,7 +133,7 @@ class MeshReflectorMaterial extends Component {
         0.0,
         0.0,
         0.0,
-        1.0
+        1.0,
       );
       textureMatrix.multiply(virtualCamera.projectionMatrix);
       textureMatrix.multiply(virtualCamera.matrixWorldInverse);
@@ -143,7 +143,7 @@ class MeshReflectorMaterial extends Component {
       // Paper explaining this technique: http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
       reflectorPlane.setFromNormalAndCoplanarPoint(
         normal,
-        reflectorWorldPosition
+        reflectorWorldPosition,
       );
       reflectorPlane.applyMatrix4(virtualCamera.matrixWorldInverse);
 
@@ -151,7 +151,7 @@ class MeshReflectorMaterial extends Component {
         reflectorPlane.normal.x,
         reflectorPlane.normal.y,
         reflectorPlane.normal.z,
-        reflectorPlane.constant
+        reflectorPlane.constant,
       );
 
       const projectionMatrix = virtualCamera.projectionMatrix;
@@ -185,7 +185,7 @@ class MeshReflectorMaterial extends Component {
     const fbo1 = new THREE.WebGLRenderTarget(
       resolution,
       resolution,
-      parameters
+      parameters,
     );
     fbo1.depthBuffer = true;
     fbo1.depthTexture = new THREE.DepthTexture(resolution, resolution);
@@ -194,7 +194,7 @@ class MeshReflectorMaterial extends Component {
     const fbo2 = new THREE.WebGLRenderTarget(
       resolution,
       resolution,
-      parameters
+      parameters,
     );
     const blurpass = new BlurPass({
       gl,
@@ -221,7 +221,7 @@ class MeshReflectorMaterial extends Component {
     this.blurpass = blurpass;
 
     const material = new MeshReflectorMaterialImpl(reflectorProps);
-    material.defines.USE_BLUR = defines["defines-USE_BLUR"];
+    material.defines!.USE_BLUR = defines["defines-USE_BLUR"];
     this.material = material;
   }
   update(time: number): void {

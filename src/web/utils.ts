@@ -4,7 +4,7 @@ export type HTMLAssetElement = HTMLImageElement | HTMLVideoElement;
 
 const handleTextureProp = (
   el: HTMLAssetElement | null,
-  texture: THREE.Texture
+  texture: THREE.Texture,
 ) => {
   const minFilterDefaultValue =
     el instanceof HTMLVideoElement ? "linear" : "mipmap";
@@ -34,7 +34,7 @@ const handleTextureProp = (
     const start = el?.getAttribute("autoplay") || "";
     el?.addEventListener("loadedmetadata", () => {
       if (start) {
-        texture.image.play();
+        (texture.image as HTMLVideoElement).play();
       }
     });
   }
@@ -51,13 +51,13 @@ const loadTextureFromImg = (el: HTMLImageElement | null) => {
 
 const loadCubemapFromImgs = (
   el: HTMLImageElement | null,
-  els: HTMLImageElement[]
+  els: HTMLImageElement[],
 ) => {
   if (!el) {
     return null;
   }
   const texture = new THREE.CubeTextureLoader().load(
-    els.map((item) => item.src)
+    els.map((item) => item.src),
   );
   handleTextureProp(el, texture);
   return texture;
@@ -75,7 +75,7 @@ const loadTextureFromVideo = (el: HTMLVideoElement | null) => {
 const getUniformFromAsset = (
   el: HTMLAssetElement | null,
   name: string,
-  parent: HTMLElement | null = null
+  parent: HTMLElement | null = null,
 ) => {
   if (!el) {
     return {};
@@ -102,13 +102,14 @@ const getUniformFromAsset = (
       "2d": name,
       cube: `${name}Cube`,
     }[type] || name;
+  const img = texture?.image as any;
   const uniform = texture
     ? {
         [uniformName]: {
           value: texture,
         },
         [`${uniformName}Resolution`]: {
-          value: new THREE.Vector2(texture.image?.width, texture.image?.height),
+          value: new THREE.Vector2(img?.width, img?.height),
         },
       }
     : {};
